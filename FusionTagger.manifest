@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"72ede1cb-1e16-4507-91cd-19f03ab51bf2",
+	"author":	"",
+	"description":	{
+		"":	"Read and Write Attributes in a Fusion 360 design"
+	},
+	"version":	"",
+	"runOnStartup":	false,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}
