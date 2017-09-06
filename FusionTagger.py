@@ -1,5 +1,5 @@
-#Author-
-#Description-Read and Write Attributes in a Fusion 360 design
+# Author-
+# Description-Read and Write Attributes in a Fusion 360 design
 
 # Author-Patrick Rainsberry
 # Description-Calculates bolt holes
