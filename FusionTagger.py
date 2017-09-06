@@ -1,8 +1,6 @@
-# Author-
+# Author-Patrick Rainsberry
 # Description-Read and Write Attributes in a Fusion 360 design
 
-# Author-Patrick Rainsberry
-# Description-Calculates bolt holes
 
 # Importing  Fusion Commands
 from .FusionTaggerCommand import FusionTaggerCommand
