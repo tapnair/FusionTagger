@@ -58,5 +58,5 @@ class FusionTaggerViewerCommand(Fusion360CommandBase):
         message = 'Type the value of the group or attribute you want to find in the document.\n ' \
                   'Leave blank for all values'
         returnValue = command_inputs.addTextBoxCommandInput('text_box', 'Instructions', message, 3, True)
-        command_inputs.addStringValueInput('attribute_group', 'Group', 'ONC')
+        command_inputs.addStringValueInput('attribute_group', 'Group', '**GroupName**')
         command_inputs.addStringValueInput('attribute_name', 'Name', '')

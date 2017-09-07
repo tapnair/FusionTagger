@@ -54,8 +54,6 @@ def tag_active_doc(attribute_dict, group_name):
 
     ao = get_app_objects()
 
-    ao['ui'].messageBox(str(ao))
-
     root_comp = ao['root_comp']
 
     for key, value in attribute_dict.items():
@@ -130,4 +128,4 @@ class FusionTaggerImporterCommand(Fusion360CommandBase):
         refresh_button_row_input = command_inputs.addButtonRowCommandInput('browse', 'Browse for File', False)
         refresh_button_row_input.listItems.add('Browse for File', False, 'Resources')
 
-        command_inputs.addStringValueInput('attribute_group', 'Group', 'ONC')
+        command_inputs.addStringValueInput('attribute_group', 'Group', '**GroupName**')
