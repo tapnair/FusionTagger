@@ -8,6 +8,14 @@ import traceback
 # Externally usable function to get all relevant application objects easily in a dictionary
 def get_app_objects():
 
+    design = None
+    units_manager = None
+    all_occurrences = None
+    all_components = None
+    root_comp = None
+    time_line = None
+    export_manager = None
+
     app = adsk.core.Application.cast(adsk.core.Application.get())
 
     # Get import manager
@@ -16,18 +24,22 @@ def get_app_objects():
     # Get User Interface
     ui = app.userInterface
 
-    # Get active design
-    product = app.activeProduct
-    design = adsk.fusion.Design.cast(product)
+    # Get the active document
     document = app.activeDocument
+
+    design = document.products.itemByProductType('DesignProductType')
+
+    design = adsk.fusion.Design.cast(design)
 
     # Get Design specific elements
     units_manager = design.fusionUnitsManager
     export_manager = design.exportManager
-    root_comp = design.rootComponent
-    time_line = product.timeline
+
+    if design.designType == adsk.fusion.DesignTypes.ParametricDesignType:
+        time_line = design.timeline
 
     # Get top level collections
+    root_comp = design.rootComponent
     all_occurrences = root_comp.allOccurrences
     all_components = design.allComponents
 
@@ -45,6 +57,38 @@ def get_app_objects():
         'document': document
     }
     return app_objects
+
+
+def open_file():
+    app_objects = get_app_objects()
+
+    ui = app_objects['ui']
+
+    file_dialog = ui.createFileDialog()
+
+    file_dialog.isMultiSelectEnabled = False
+
+    result = file_dialog.showOpen()
+
+    if result != adsk.core.DialogResults.DialogCancel:
+        file_name = file_dialog.filename
+        return file_name
+
+
+def open_files():
+    app_objects = get_app_objects()
+
+    ui = app_objects['ui']
+
+    file_dialog = ui.createFileDialog()
+
+    file_dialog.isMultiSelectEnabled = True
+
+    result = file_dialog.showOpen()
+
+    if result == adsk.core.DialogResults.DialogOK:
+        file_names = file_dialog.filenames
+        return file_names
 
 
 def start_group():

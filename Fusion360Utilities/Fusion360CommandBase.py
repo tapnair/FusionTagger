@@ -38,11 +38,13 @@ def get_inputs(command_inputs):
                     input_values[command_input.id + '_input'] = command_input
 
                 else:
+                    if command_input.selectedItem is not None:
+                        input_values[command_input.id] = command_input.selectedItem.name
+                        input_values[command_input.id + '_input'] = command_input
+            else:
+                if command_input.selectedItem is not None:
                     input_values[command_input.id] = command_input.selectedItem.name
                     input_values[command_input.id + '_input'] = command_input
-            else:
-                input_values[command_input.id] = command_input.selectedItem.name
-                input_values[command_input.id + '_input'] = command_input
 
         # If the input type is a selection an array of entities is returned
         elif command_input.objectType in selection_types:

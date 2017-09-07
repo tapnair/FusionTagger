@@ -6,7 +6,7 @@ import os
 from os.path import expanduser
 import csv
 
-from .Fusion360Utilities.Fusion360Utilities import get_app_objects
+from .Fusion360Utilities.Fusion360Utilities import get_app_objects, open_file
 from .Fusion360Utilities.Fusion360CommandBase import Fusion360CommandBase
 
 
@@ -54,12 +54,27 @@ def tag_active_doc(attribute_dict, group_name):
 
     ao = get_app_objects()
 
+    ao['ui'].messageBox(str(ao))
+
     root_comp = ao['root_comp']
 
     for key, value in attribute_dict.items():
 
         root_comp.attributes.add(group_name, key, value)
 
+
+# Creates local directory and returns file name for settings file
+def get_path_name():
+
+    # Get Home directory
+    default_path = expanduser("~")
+    default_path += '/Fusion_Tagger/'
+
+    # Create if doesn't exist
+    if not os.path.exists(default_path):
+        os.makedirs(default_path)
+
+    return default_path
 
 # Class for a Fusion 360 Command
 # Place your program logic here
@@ -79,7 +94,13 @@ class FusionTaggerImporterCommand(Fusion360CommandBase):
     # Run when any input is changed.
     # Can be used to check a value and then update the add-in UI accordingly
     def on_input_changed(self, command_, command_inputs, changed_input, input_values):
-        pass
+
+        # Refresh the dropdowns for printer and slicer profiles
+        if changed_input.id == 'browse':
+
+            selected_file = open_file()
+            changed_input.selectedItem.isSelected = False
+            input_values['csv_file_input'].value = selected_file
 
     # Run when the user presses OK
     # This is typically where your main program logic would go
@@ -88,11 +109,7 @@ class FusionTaggerImporterCommand(Fusion360CommandBase):
         # todo get csv input
         # data_file_name = os.path.dirname(os.path.realpath(__file__))
 
-        # TODO Remove defaults
-        data_file_name = '/Users/rainsbp/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/OverNightComposites'
-        data_file_name += '/Fusion_360_Metadata.csv'
-
-        attribute_list = csv_dict_list(data_file_name)
+        attribute_list = csv_dict_list(input_values['csv_file'])
 
         app = adsk.core.Application.get()
         tag_folder(app.data.activeProject.rootFolder, attribute_list, input_values['attribute_group'])
@@ -104,5 +121,13 @@ class FusionTaggerImporterCommand(Fusion360CommandBase):
     # Typically used to create and display a command dialog box
     # The following is a basic sample of a dialog UI
     def on_create(self, command, command_inputs):
+
+        default_path = get_path_name()
+        default_name = default_path + 'default.csv'
+
+        command_inputs.addStringValueInput('csv_file', 'CSV File Name', default_name)
+
+        refresh_button_row_input = command_inputs.addButtonRowCommandInput('browse', 'Browse for File', False)
+        refresh_button_row_input.listItems.add('Browse for File', False, 'Resources')
 
         command_inputs.addStringValueInput('attribute_group', 'Group', 'ONC')
