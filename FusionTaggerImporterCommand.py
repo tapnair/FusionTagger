@@ -27,7 +27,7 @@ def tag_folder(root_folder, attribute_list, group_name):
 
     for folder in root_folder.dataFolders:
 
-        tag_folder(folder, attribute_list)
+        tag_folder(folder, attribute_list, group_name)
 
     for file in root_folder.dataFiles:
 
