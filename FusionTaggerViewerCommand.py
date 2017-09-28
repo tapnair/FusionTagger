@@ -34,18 +34,21 @@ class FusionTaggerViewerCommand(Fusion360CommandBase):
 
         attributes = ao['design'].findAttributes(input_values['attribute_group'], input_values['attribute_name'])
 
-        message_string = ''
+        if len(attributes) > 0:
+            message_string = ''
 
-        for attribute in attributes:
+            for attribute in attributes:
 
-            message_string += attribute.groupName
-            message_string += ' , '
-            message_string += attribute.name
-            message_string += ' , '
-            message_string += attribute.value
-            message_string += ' , '
-            message_string += attribute.parent.name
-            message_string += '\n'
+                message_string += attribute.groupName
+                message_string += ' , '
+                message_string += attribute.name
+                message_string += ' , '
+                message_string += attribute.value
+                message_string += ' , '
+                message_string += attribute.parent.name
+                message_string += '\n'
+        else:
+            message_string = 'No Atrributes Found'
 
         ao['ui'].messageBox(message_string)
 
